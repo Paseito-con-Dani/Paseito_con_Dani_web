@@ -1,0 +1,256 @@
+/* =========================================================
+   Paseíto con Dani · Sitio oficial
+   Sistema visual según el Brand Book v2 (aprobado por Daniela)
+   Jerarquía: Oswald 600 (títulos) > 500 (subtítulos) > 400 (etiquetas) · 300 (citas)
+   Texto: Arimo · Bitácora: Courier Prime
+   ========================================================= */
+@font-face{font-family:"Oswald";src:url(../fonts/Oswald-Light.woff2) format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Oswald";src:url(../fonts/Oswald-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Oswald";src:url(../fonts/Oswald-Medium.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Oswald";src:url(../fonts/Oswald-SemiBold.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"Arimo";src:url(../fonts/Arimo-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Arimo";src:url(../fonts/Arimo-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(../fonts/CourierPrime-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(../fonts/CourierPrime-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+
+:root{
+  /* Paleta oficial */
+  --nube:#FFFFFF; --arena:#F2EBD8; --roca:#4B4843; --mantra:#614F44; --sabana:#88946C; --selva:#414C2F;
+  --araguaney:#F1C711; --noche:#122A45; --orquidea:#D7A9CE; --fogata:#BE5321; --cacao:#7C3415; --carbon:#030304;
+  --reseteo:#5F6B5A; /* color propio de la marca El Reseteo, solo en su sección */
+  /* Semánticos */
+  --surface:var(--arena); --ink:var(--carbon); --ink-muted:var(--roca); --line:#DCD2BA;
+  --accent:var(--fogata); --on-accent:var(--nube); --accent-text:var(--cacao); --focus:var(--noche);
+  --font-title:"Oswald","Arial Narrow",sans-serif; --font-body:"Arimo",Arial,Helvetica,sans-serif; --font-log:"Courier Prime","Courier New",monospace;
+  --r-sm:4px; --r-md:10px; --r-lg:20px; --shadow:0 1px 2px rgba(3,3,4,.06),0 10px 28px rgba(3,3,4,.10);
+  --wrap:1180px; --pad:clamp(20px,5vw,48px); --nav-h:72px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 8px)}
+body{margin:0;background:var(--surface);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--accent-text)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad);position:relative;z-index:1}
+
+/* ---------- Tipografía (jerarquía del brand book) ---------- */
+.titulo{font-family:var(--font-title);font-weight:600;font-size:clamp(36px,5.2vw,64px);line-height:1.02;letter-spacing:-.005em;margin:0 0 20px;text-wrap:balance}
+.subtitulo{font-family:var(--font-title);font-weight:500;font-size:clamp(18px,2vw,24px);line-height:1.25;letter-spacing:.03em;text-transform:uppercase;margin:0 0 10px}
+.etiqueta{font-family:var(--font-title);font-weight:400;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-text);margin:0 0 12px;display:block}
+.cita{font-family:var(--font-title);font-weight:300;font-size:clamp(24px,3vw,34px);line-height:1.25;margin:0}
+.lead{font-size:19px;line-height:1.6}
+.bitacora{font-family:var(--font-log);font-size:14px;letter-spacing:.02em;color:var(--ink-muted)}
+p{margin:0 0 16px;max-width:68ch}
+
+/* ---------- Botones ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 24px;border-radius:var(--r-md);border:2px solid transparent;font-family:var(--font-title);font-weight:500;font-size:15px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn--primario{background:var(--accent);color:var(--on-accent)}
+.btn--secundario{background:transparent;color:currentColor;border-color:currentColor}
+.btn--chispa{background:var(--araguaney);color:var(--carbon)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.tag{display:inline-flex;align-items:center;font-family:var(--font-title);font-weight:400;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:var(--araguaney);color:var(--carbon)}
+.tag--orquidea{background:var(--orquidea)} .tag--sabana{background:var(--sabana)} .tag--linea{background:transparent;border:1px solid currentColor}
+
+/* ---------- Navegación ---------- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(242,235,216,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav__in{height:var(--nav-h);display:flex;align-items:center;gap:20px}
+.nav__logo img{height:46px;width:auto}
+.nav__links{display:flex;gap:22px;margin-left:auto;list-style:none;padding:0}
+.nav__links a{font-family:var(--font-title);font-weight:400;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+.nav__links a:hover{color:var(--accent-text)}
+.nav__cart{position:relative;background:none;border:0;cursor:pointer;padding:8px;color:var(--ink)}
+.nav__cart svg{width:26px;height:26px}
+.nav__badge{position:absolute;top:0;right:-2px;min-width:20px;height:20px;border-radius:999px;background:var(--fogata);color:#fff;font:600 12px/20px var(--font-body);text-align:center;padding:0 5px}
+.nav__toggle{display:none;background:none;border:0;padding:8px;cursor:pointer}
+.nav__toggle span{display:block;width:24px;height:2px;background:var(--ink);margin:5px 0}
+@media (max-width:980px){
+  .nav__toggle{display:block;margin-left:auto}
+  .nav__links{position:absolute;top:var(--nav-h);left:0;right:0;flex-direction:column;gap:0;background:var(--arena);border-bottom:1px solid var(--line);display:none;margin:0}
+  .nav__links.open{display:flex}
+  .nav__links a{display:block;padding:14px var(--pad)}
+}
+
+/* ---------- Secciones y fondos ilustrados ---------- */
+.sec{position:relative;padding:clamp(72px,10vw,128px) 0;overflow:hidden}
+.sec--nube{background:var(--nube)} .sec--arena{background:var(--arena)}
+.sec--noche{background:var(--noche);color:var(--arena)} .sec--noche .etiqueta{color:var(--araguaney)}
+.sec--selva{background:var(--selva);color:var(--arena)} .sec--selva .etiqueta{color:var(--araguaney)}
+.sec--reseteo{background:var(--reseteo);color:var(--arena)} .sec--reseteo .etiqueta{color:var(--arena);opacity:.85}
+.sec--noche a,.sec--selva a,.sec--reseteo a{color:var(--araguaney)}
+.sec--noche .bitacora,.sec--selva .bitacora,.sec--reseteo .bitacora{color:#C9C1AD}
+.map-bg{position:absolute;inset:0;z-index:0;pointer-events:none;color:var(--map-color,var(--fogata));opacity:var(--map-op,.5)}
+.map-bg svg{width:100%;height:100%}
+.deco{position:absolute;z-index:0;width:clamp(48px,6vw,84px);color:var(--deco-color,var(--selva));opacity:.55;pointer-events:none}
+.deco svg{width:100%;height:auto;overflow:visible}
+
+/* ---------- Hero ---------- */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;min-height:calc(100vh - var(--nav-h));background:var(--arena);position:relative;overflow:hidden}
+.hero__txt{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(40px,6vw,88px) var(--pad);gap:22px}
+.hero__logo{width:min(560px,100%)}
+.hero__tagline{font-family:var(--font-body);font-weight:700;font-size:clamp(20px,2.2vw,26px);margin:0}
+.hero__acciones{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.hero__foto{position:relative;min-height:420px}
+.hero__foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+@media (max-width:900px){.hero{grid-template-columns:1fr;min-height:0}.hero__foto{min-height:70vh}}
+
+/* ---------- Layouts ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,80px);align-items:center}
+.split--inv>:first-child{order:2}
+@media (max-width:860px){.split{grid-template-columns:1fr}.split--inv>:first-child{order:0}}
+.foto{border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);position:relative}
+.foto img{width:100%;height:100%;object-fit:cover}
+.foto--alta{aspect-ratio:4/5}
+.fotos-duo{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:end}
+.fotos-duo .foto:first-child{transform:translateY(-28px)}
+.ruta{display:flex;align-items:center;gap:10px;margin:28px 0}
+.ruta__linea{flex:1;border-top:3px dashed currentColor;opacity:.8}
+.ruta img{width:18px}
+
+/* Pilares y equipo */
+.pilares{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.pilar{background:var(--arena);border-radius:var(--r-lg);padding:24px;border-top:5px solid var(--c)}
+.pilar .subtitulo{color:var(--c)}
+.pilar p{font-size:15.5px;margin:0}
+.equipo{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.equipo__item{display:flex;gap:14px;align-items:center;font-size:15px}
+.equipo__item img{width:56px;height:56px;object-fit:contain;background:var(--nube);border-radius:var(--r-md);padding:8px;flex:none;box-shadow:var(--shadow)}
+@media (max-width:860px){.pilares,.equipo{grid-template-columns:1fr}}
+
+/* ---------- YouTube / countdown ---------- */
+.yt{text-align:center}
+.yt .titulo{max-width:18ch;margin-left:auto;margin-right:auto}
+.countdown{display:flex;justify-content:center;gap:clamp(10px,2.5vw,28px);margin:34px 0}
+.countdown__u{min-width:clamp(70px,12vw,120px);padding:16px 10px;border:1px solid rgba(242,235,216,.25);border-radius:var(--r-lg);background:rgba(242,235,216,.04)}
+.countdown__n{display:block;font-family:var(--font-title);font-weight:600;font-size:clamp(40px,7vw,76px);line-height:1;color:var(--araguaney)}
+.countdown__l{font-family:var(--font-title);font-weight:400;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.yt__msg{max-width:30ch;margin:0 auto 30px}
+.yt__video{max-width:860px;margin:40px auto 0;aspect-ratio:16/9;border-radius:var(--r-lg);overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.yt__video iframe{width:100%;height:100%;border:0}
+
+/* ---------- Calendario de experiencias ---------- */
+.cal{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;margin-top:40px;align-items:start}
+@media (max-width:900px){.cal{grid-template-columns:1fr}}
+.cal__mes{background:var(--nube);border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow)}
+.cal__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal__head h3{margin:0}
+.cal__nav{background:none;border:1px solid var(--line);border-radius:var(--r-md);width:40px;height:40px;cursor:pointer;font-size:18px;color:var(--ink)}
+.cal__grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal__dow{font-family:var(--font-title);font-weight:400;font-size:12px;letter-spacing:.12em;color:var(--ink-muted);padding:6px 0}
+.cal__dia{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:var(--r-md);font-size:15px;position:relative}
+.cal__dia--fuera{color:#B8B0A0}
+.cal__dia--evento{background:var(--fogata);color:#fff;font-weight:700;cursor:pointer;border:0;font-family:var(--font-body)}
+.cal__dia--intriga{background:var(--orquidea);color:var(--carbon)}
+.cal__dia--hoy{outline:2px solid var(--selva);outline-offset:-2px}
+.agenda{display:flex;flex-direction:column;gap:14px}
+.evento{background:var(--nube);border-radius:var(--r-lg);padding:20px 22px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr;gap:6px 18px;align-items:center;border-left:6px solid var(--fogata)}
+.evento--intriga{border-left-color:var(--orquidea)}
+.evento__fecha{font-family:var(--font-title);font-weight:600;font-size:30px;line-height:1;text-align:center;grid-row:span 3}
+.evento__fecha small{display:block;font-weight:400;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.evento h4{margin:0;font-family:var(--font-title);font-weight:500;font-size:19px;letter-spacing:.03em;text-transform:uppercase}
+.evento .btn{justify-self:start;min-height:40px;padding:0 18px;font-size:13px}
+
+/* ---------- Tienda ---------- */
+.filtros{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0}
+.filtro{font-family:var(--font-title);font-weight:400;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:999px;border:1px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink)}
+.filtro[aria-pressed="true"]{background:var(--ink);color:var(--arena)}
+.productos{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+.producto{background:var(--nube);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.producto__img{aspect-ratio:4/3;background:var(--selva);position:relative;display:flex;align-items:center;justify-content:center}
+.producto__img img{width:100%;height:100%;object-fit:cover}
+.producto__img img.pict{width:38%;height:auto;object-fit:contain}
+.producto__img .tag{position:absolute;top:12px;left:12px}
+.producto__body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.producto__body h4{margin:0;font-family:var(--font-title);font-weight:500;font-size:19px;letter-spacing:.03em;text-transform:uppercase}
+.producto__body p{font-size:14.5px;margin:0;color:var(--ink-muted)}
+.producto__pie{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px}
+.precio{font-family:var(--font-title);font-weight:600;font-size:24px}
+.producto .btn{min-height:40px;padding:0 16px;font-size:13px}
+
+/* Carrito (panel lateral) */
+.drawer{position:fixed;inset:0;z-index:80;display:none}
+.drawer.open{display:block}
+.drawer__fondo{position:absolute;inset:0;background:rgba(3,3,4,.45)}
+.drawer__panel{position:absolute;top:0;right:0;bottom:0;width:min(460px,100%);background:var(--arena);display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.2)}
+.drawer__head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line)}
+.drawer__head h3{margin:0}
+.drawer__cerrar{background:none;border:0;font-size:28px;line-height:1;cursor:pointer;color:var(--ink)}
+.drawer__body{flex:1;overflow:auto;padding:18px 22px}
+.drawer__foot{padding:18px 22px;border-top:1px solid var(--line);background:var(--nube)}
+.linea{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
+.linea__cant{display:inline-flex;align-items:center;gap:8px}
+.linea__cant button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--nube);cursor:pointer}
+.total{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-title);font-weight:600;font-size:22px}
+.metodos{display:grid;gap:10px;margin:14px 0}
+.metodo{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--nube);cursor:pointer;font-size:15px}
+.metodo:has(input:checked){border-color:var(--fogata);box-shadow:0 0 0 1px var(--fogata)}
+.datos-pago{background:var(--arena);border-radius:var(--r-md);padding:12px 14px;font-size:14px;margin:6px 0 12px;font-family:var(--font-log)}
+
+/* ---------- Formularios y modal ---------- */
+.campo{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.campo label{font-family:var(--font-title);font-weight:400;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.campo input,.campo select,.campo textarea{font:inherit;font-size:16px;padding:11px 13px;border-radius:var(--r-md);border:1px solid #CFC5AB;background:var(--nube);color:var(--carbon);width:100%}
+.campos-2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+@media (max-width:560px){.campos-2{grid-template-columns:1fr}}
+.aviso{font-size:14px;padding:12px 14px;border-radius:var(--r-md);background:#E7F0DE;color:var(--selva);margin-top:10px}
+.aviso--error{background:#F8E1D6;color:var(--cacao)}
+.modal{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal__panel{position:relative;background:var(--arena);border-radius:var(--r-lg);max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:28px;box-shadow:0 30px 60px rgba(0,0,0,.3)}
+
+/* ---------- El Reseteo ---------- */
+.reseteo__logo{width:min(380px,80%);color:var(--arena);margin:0 auto}
+.reseteo__logo svg{width:100%;height:auto}
+.reseteo .cita{margin-top:28px}
+
+/* ---------- Contacto ---------- */
+.canales{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:12px}
+.canales a{display:inline-flex;gap:12px;align-items:center;text-decoration:none;font-size:17px;color:var(--arena)}
+.canales svg{width:22px;height:22px;flex:none}
+.form-aliados{background:var(--arena);color:var(--carbon);border-radius:var(--r-lg);padding:clamp(22px,3vw,32px)}
+.form-aliados .etiqueta{color:var(--accent-text)}
+
+/* ---------- Footer ---------- */
+.footer{background:var(--carbon);color:#C9C1AD;text-align:center;padding:34px var(--pad) 40px}
+.footer__powered{display:inline-flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:#C9C1AD}
+.footer__powered span{font-family:var(--font-title);font-weight:400;font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+.footer__powered img{height:40px;width:auto;background:var(--arena);border-radius:var(--r-md);padding:6px 12px}
+.footer small{display:block;margin-top:16px;font-size:13px}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+
+/* Ajustes de contraste de botones sobre fondos oscuros */
+.sec--noche .btn--primario,.sec--selva .btn--primario,.sec--reseteo .btn--primario{color:var(--on-accent)}
+.sec--noche .btn--chispa,.sec--selva .btn--chispa,.sec--reseteo .btn--chispa{color:var(--carbon)}
+.sec--noche .btn--secundario,.sec--selva .btn--secundario,.sec--reseteo .btn--secundario{color:var(--arena)}
+.evento .tag{justify-self:start}
+.producto__img img:not(.pict){position:absolute;inset:0}
+.producto__pie .btn{white-space:nowrap}
+.producto__pie .bitacora{white-space:nowrap;font-size:13px}
+.footer__powered img{height:54px}
+
+/* Detalles de composición: colibrí, mariposa y pictogramas con intención */
+.deco{width:clamp(96px,11vw,150px);opacity:.9;z-index:2}
+.deco svg{stroke-width:1.5}
+.deco--inv svg{transform:scaleX(-1)}
+@media (prefers-reduced-motion:no-preference){.deco--vuelo{animation:vuelo 7s ease-in-out infinite}}
+@keyframes vuelo{0%,100%{translate:0 0}50%{translate:6px -10px}}
+.deco-pict{position:absolute;z-index:0;aspect-ratio:1;pointer-events:none;background:var(--c,var(--selva));opacity:var(--o,.16);-webkit-mask:var(--img) center/contain no-repeat;mask:var(--img) center/contain no-repeat}
+/* Fotos con menos peso visual: más fondo, menos foto */
+.fotos-duo--ligera{max-width:440px;margin-left:auto}
+.foto--ligera{max-width:400px;margin:0 auto;aspect-ratio:4/5}
+.hero{grid-template-columns:1.25fr .85fr}
+@media (max-width:900px){.hero{grid-template-columns:1fr}.fotos-duo--ligera{margin:0 auto}}
+.agenda--unica{max-width:520px}
+.producto__pie{flex-wrap:wrap}
+.producto__pie .bitacora{font-size:12.5px}
+
+/* Huellitas de Mantra caminando */
+.huellas{position:absolute;left:50%;transform:translateX(-50%);width:max(100%,1100px);z-index:0;pointer-events:none;color:var(--c,var(--mantra))}
+.huellas svg{width:100%;height:auto;display:block;overflow:visible}
+.huellas .pisada{opacity:.5}
+@media (prefers-reduced-motion:no-preference){
+  .huellas .pisada{animation:pisada 7s linear infinite;animation-delay:calc(var(--i) * .28s)}
+}
+@keyframes pisada{0%{opacity:.08}4%{opacity:.6}62%{opacity:.6}80%{opacity:.08}100%{opacity:.08}}
