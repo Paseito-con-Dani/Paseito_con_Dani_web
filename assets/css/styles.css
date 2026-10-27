@@ -80,7 +80,7 @@ p{margin:0 0 16px;max-width:68ch}
 .sec--reseteo{background:var(--reseteo);color:var(--arena)} .sec--reseteo .etiqueta{color:var(--arena);opacity:.85}
 .sec--noche a,.sec--selva a,.sec--reseteo a{color:var(--araguaney)}
 .sec--noche .bitacora,.sec--selva .bitacora,.sec--reseteo .bitacora{color:#C9C1AD}
-.map-bg{position:absolute;inset:0;z-index:0;pointer-events:none;color:var(--map-color,var(--fogata));opacity:var(--map-op,.5)}
+.map-bg{position:absolute;inset:0;z-index:0;pointer-events:none;color:var(--map-color,var(--fogata));opacity:var(--map-op,.4)}
 .map-bg svg{width:100%;height:100%}
 .deco{position:absolute;z-index:0;width:clamp(48px,6vw,84px);color:var(--deco-color,var(--selva));opacity:.55;pointer-events:none}
 .deco svg{width:100%;height:auto;overflow:visible}
@@ -231,7 +231,7 @@ p{margin:0 0 16px;max-width:68ch}
 .footer__powered img{height:54px}
 
 /* Detalles de composición: colibrí, mariposa y pictogramas con intención */
-.deco{width:clamp(96px,11vw,150px);opacity:.9;z-index:2}
+.deco{width:clamp(78px,9vw,124px);opacity:.9;z-index:2}
 .deco svg{stroke-width:1.5}
 .deco--inv svg{transform:scaleX(-1)}
 @media (prefers-reduced-motion:no-preference){.deco--vuelo{animation:vuelo 7s ease-in-out infinite}}
@@ -249,8 +249,16 @@ p{margin:0 0 16px;max-width:68ch}
 /* Huellitas de Mantra caminando */
 .huellas{position:absolute;left:50%;transform:translateX(-50%);width:max(100%,1100px);z-index:0;pointer-events:none;color:var(--c,var(--mantra))}
 .huellas svg{width:100%;height:auto;display:block;overflow:visible}
-.huellas .pisada{opacity:.5}
+.huellas .pisada{opacity:.4}
 @media (prefers-reduced-motion:no-preference){
   .huellas .pisada{animation:pisada 7s linear infinite;animation-delay:calc(var(--i) * .28s)}
 }
-@keyframes pisada{0%{opacity:.08}4%{opacity:.6}62%{opacity:.6}80%{opacity:.08}100%{opacity:.08}}
+@keyframes pisada{0%{opacity:.06}4%{opacity:.5}62%{opacity:.5}80%{opacity:.06}100%{opacity:.06}}
+
+/* Calendario más compacto */
+.cal{grid-template-columns:minmax(0,420px) 1fr}
+.cal__mes{padding:18px}
+.cal__grid{gap:3px}
+.cal__dia{font-size:14px;aspect-ratio:auto;height:40px}
+.cal__nav{width:34px;height:34px;font-size:16px}
+@media (max-width:900px){.cal{grid-template-columns:1fr}.cal__mes{max-width:420px}}

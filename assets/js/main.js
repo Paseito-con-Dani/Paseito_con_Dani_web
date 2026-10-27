@@ -66,9 +66,9 @@
     const n = 16; let g = "";
     for (let k = 0; k < n; k++) {
       const t = (k + .5) / n, x = B(t,0), y = B(t,1), dx = B(t+.01,0) - x, dy = B(t+.01,1) - y;
-      const ang = Math.atan2(dy, dx), lado = k % 2 ? 1 : -1, off = 13 * lado;
+      const ang = Math.atan2(dy, dx), lado = k % 2 ? 1 : -1, off = 11 * lado;
       const px = x - Math.sin(ang) * off, py = y + Math.cos(ang) * off;
-      g += `<g class="pisada" style="--i:${k}" transform="translate(${px.toFixed(1)} ${py.toFixed(1)}) rotate(${(ang*180/Math.PI + 90).toFixed(1)}) scale(1.45)">${PATITA}</g>`;
+      g += `<g class="pisada" style="--i:${k}" transform="translate(${px.toFixed(1)} ${py.toFixed(1)}) rotate(${(ang*180/Math.PI + 90).toFixed(1)}) scale(1.15)">${PATITA}</g>`;
     }
     el.innerHTML = `<svg viewBox="0 0 1200 210" fill="currentColor">${g}</svg>`;
   });
