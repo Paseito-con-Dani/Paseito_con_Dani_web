@@ -63,6 +63,7 @@ window.PCD_CONFIG = {
   /* --- Contacto --- */
   contacto: {
     correo: "danicgonz@gmail.com", // temporal hasta tener el correo de Workspace
+    whatsapp: "+58 412-7923790",
     instagram: ["paseitocondani", "elreseteo"],
     tiktok: "paseitocondani",
     youtube: "paseitocondani"

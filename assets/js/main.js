@@ -252,9 +252,11 @@
     mail: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`,
     ig: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>`,
     tt: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.5 2.8 2.5 4.6 5 4.8"/></svg>`,
+    wa: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 20l1.3-4A8 8 0 1 1 8.4 19z"/><path d="M9.2 8.6c.2-.5.6-.5.9-.5l.6 1.4c.1.3-.4.8-.6 1 .5 1 1.3 1.8 2.4 2.4.2-.2.7-.7 1-.6l1.4.6c0 .3 0 .7-.5.9-.9.5-2.4.2-3.9-1.2-1.5-1.5-1.9-3-1.3-4z" fill="currentColor" stroke="none"/></svg>`,
     yt: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10 9 5 3-5 3z" fill="currentColor"/></svg>`
   };
   const canales = [];
+  if (K.whatsapp) { const n = K.whatsapp.replace(/\D/g, ""); canales.push(`<li><a href="https://wa.me/${n}" target="_blank" rel="noopener">${ico.wa}${esc(K.whatsapp)}</a></li>`); }
   if (K.correo) canales.push(`<li><a href="mailto:${esc(K.correo)}">${ico.mail}${esc(K.correo)}</a></li>`);
   (K.instagram || []).forEach(u => canales.push(`<li><a href="https://instagram.com/${esc(u)}" target="_blank" rel="noopener">${ico.ig}@${esc(u)}</a></li>`));
   if (K.tiktok) canales.push(`<li><a href="https://www.tiktok.com/@${esc(K.tiktok)}" target="_blank" rel="noopener">${ico.tt}@${esc(K.tiktok)}</a></li>`);
