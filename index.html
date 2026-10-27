@@ -29,8 +29,8 @@
       <li><a href="#reseteo">El Reseteo</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
-    <button class="nav__cart" data-abrir-carrito aria-label="Ver carrito">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 12.1a1 1 0 0 1-1 .9H8.2a1 1 0 0 1-1-.9z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+    <button class="nav__cart" data-abrir-carrito aria-label="Ver tu equipaje (carrito de compras)" title="Tu equipaje">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12.5" rx="2.2"/><path d="M9 7V4.8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V7"/><path d="M9 10.5v6M15 10.5v6"/><path d="M8 19.5v1.2M16 19.5v1.2"/></svg>
       <span class="nav__badge" data-badge hidden>0</span>
     </button>
   </div>
@@ -160,7 +160,7 @@
 <!-- ================= 6 · EL RESETEO ================= -->
 <section class="sec sec--reseteo reseteo" id="reseteo">
   <div class="deco deco--vuelo" data-deco="mariposa" style="top:9%;right:7%;--deco-color:var(--arena)"></div>
-  <div class="deco deco--vuelo deco--inv" data-deco="colibri" style="bottom:9%;left:5%;--deco-color:var(--arena)"></div>
+  <div class="deco deco--vuelo deco--inv deco--reseteo-colibri" data-deco="colibri" style="bottom:9%;left:5%;--deco-color:var(--arena)"></div>
   <div class="wrap split">
     <div class="reseteo__logo" data-svg="assets/svg/el-reseteo.svg" role="img" aria-label="El Reseteo · Sensorial & Holistic"></div>
     <div>
@@ -220,7 +220,7 @@
 <div class="drawer" data-drawer aria-hidden="true">
   <div class="drawer__fondo" data-cerrar-carrito></div>
   <aside class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="carrito-titulo">
-    <div class="drawer__head"><h3 class="subtitulo" id="carrito-titulo">Tu Paseíto</h3><button class="drawer__cerrar" data-cerrar-carrito aria-label="Cerrar carrito">×</button></div>
+    <div class="drawer__head"><h3 class="subtitulo" id="carrito-titulo">Tu equipaje</h3><button class="drawer__cerrar" data-cerrar-carrito aria-label="Cerrar equipaje">×</button></div>
     <div class="drawer__body" data-carrito-body></div>
     <div class="drawer__foot" data-carrito-foot></div>
   </aside>

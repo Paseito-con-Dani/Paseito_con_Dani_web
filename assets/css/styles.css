@@ -262,3 +262,7 @@ p{margin:0 0 16px;max-width:68ch}
 .cal__dia{font-size:14px;aspect-ratio:auto;height:40px}
 .cal__nav{width:34px;height:34px;font-size:16px}
 @media (max-width:900px){.cal{grid-template-columns:1fr}.cal__mes{max-width:420px}}
+
+/* En teléfono, el colibrí de El Reseteo vuela junto al logo, lejos de los botones */
+@media (max-width:860px){.deco--reseteo-colibri{bottom:auto!important;top:3%;left:6%!important;width:72px}}
+.deco,.deco-pict,.huellas,.map-bg{pointer-events:none}

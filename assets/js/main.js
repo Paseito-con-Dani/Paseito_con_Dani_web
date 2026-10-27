@@ -213,7 +213,7 @@
   function pintarCarrito() {
     const n = carrito.reduce((s, l) => s + l.cant, 0); const badge = $("[data-badge]"); badge.hidden = !n; badge.textContent = n;
     const body = $("[data-carrito-body]"), foot = $("[data-carrito-foot]");
-    if (!carrito.length) { body.innerHTML = `<p>Tu carrito está vacío. ¡La ruta te espera!</p>`; foot.innerHTML = ""; return; }
+    if (!carrito.length) { body.innerHTML = `<p>Tu equipaje está vacío. Que sea liviano y variado: ¡la ruta te espera!</p>`; foot.innerHTML = ""; return; }
     body.innerHTML = carrito.map(l => { const p = PROD.find(x => x.id === l.id) || {}; return `<div class="linea"><strong>${esc(p.nombre)}</strong><span>${usd((p.precioUSD||0) * l.cant)}</span>
       <span class="linea__cant"><button data-menos="${l.id}" aria-label="Quitar uno">−</button>${l.cant}<button data-mas="${l.id}" aria-label="Agregar uno">+</button></span></div>`; }).join("") + `
       <form data-form="pedidos" novalidate style="margin-top:18px">
