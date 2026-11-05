@@ -9,7 +9,7 @@ window.PCD_CONFIG = {
   youtube: {
     canal: "https://www.youtube.com/@paseitocondani",
     // Fecha y hora del estreno (hora de Venezuela, UTC-4). CONFIRMAR HORA con Dani.
-    estreno: "2026-11-13T19:00:00-04:00",
+    estreno: "2026-11-15T19:00:00-04:00",
     // ID del video para mostrarlo incrustado (ej. el tráiler o el episodio 1). Vacío = no se muestra.
     videoId: ""
   },
@@ -62,7 +62,7 @@ window.PCD_CONFIG = {
 
   /* --- Contacto --- */
   contacto: {
-    correo: "danicgonz@gmail.com", // temporal hasta tener el correo de Workspace
+    correo: "paseitocondani@gmail.com", // cuenta del proyecto (hasta tener Workspace)
     whatsapp: "+58 412-7923790",
     instagram: ["paseitocondani", "elreseteo"],
     tiktok: "paseitocondani",

@@ -10,7 +10,7 @@
  * 4. Copia la URL y pégala en assets/js/config.js → endpoints.registro y endpoints.aliados.
  */
 const HOJAS = { registro: 'Registros experiencias', aliados: 'Aliados', pedidos: 'Pedidos' };
-const CORREO_EQUIPO = 'danicgonz@gmail.com'; // cambiar al correo de Workspace cuando exista
+const CORREO_EQUIPO = 'paseitocondani@gmail.com'; // cuenta técnica del proyecto
 const ASUNTOS = { registro: 'Nueva pre-reserva de experiencia', aliados: 'Nueva marca interesada en ser aliada', pedidos: 'Nuevo pago reportado: verificar' };
 
 function doPost(e) {

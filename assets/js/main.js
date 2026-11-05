@@ -47,7 +47,12 @@
     mariposa: `<svg viewBox="0 0 160 110" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 100c18-4 26-22 44-18s14 20 30 6" stroke-dasharray="3 6" opacity=".7"/><g transform="translate(70 4) rotate(12)"><path d="M40 28v44"/><path d="M40 34C28 12 0 10 0 30c0 14 22 20 40 12"/><path d="M40 34C52 12 80 10 80 30c0 14-22 20-40 12"/><path d="M40 46C26 48 10 58 16 72c5 10 20 2 24-14"/><path d="M40 46C54 48 70 58 64 72c-5 10-20 2-24-14"/><path d="M40 28c-2-8-6-13-11-15M40 28c2-8 6-13 11-15"/><circle cx="28" cy="13" r="1.4"/><circle cx="52" cy="13" r="1.4"/><path d="M12 28c6-8 16-8 22 4M68 28c-6-8-16-8-22 4" opacity=".6"/></g></svg>`,
     colibri: `<svg viewBox="0 0 170 100" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M166 90c-16 2-22-14-36-10s-14 14-26 8" stroke-dasharray="3 6" opacity=".7"/><g transform="translate(0 2)"><path d="M6 40l30 6"/><path d="M36 46c2-8 10-12 17-9 6 3 9 9 16 12 10 4 20 3 26 10"/><path d="M36 46c3 7 12 12 22 12 9 0 15 4 21 9l16 14"/><path d="M79 67l22 6M95 59l18 2"/><circle cx="44" cy="44" r="1.4" fill="currentColor"/><path d="M58 42c4-14 16-28 36-36-6 14-12 26-28 39"/><path d="M62 44c8-6 20-10 34-10-8 6-16 12-30 14" opacity=".6"/></g></svg>`
   };
+  DECO.mariposa = `<img src="assets/svg/monarca.svg" alt="">`;
+  DECO.colibri = `<img src="assets/svg/colibri.svg" alt="">`;
   $$("[data-deco]").forEach(el => { el.innerHTML = DECO[el.dataset.deco] || ""; el.setAttribute("aria-hidden", "true"); });
+  /* Olas entre secciones */
+  const OLAS = { 1: "M0 0H1440V42C1200 92 960 8 720 46C480 84 240 18 0 62Z", 2: "M0 0H1440V56C1180 18 900 88 640 50C380 12 180 72 0 34Z", 3: "M0 0H1440V30C1260 78 1020 72 800 40C560 6 300 84 0 50Z" };
+  $$("[data-ola]").forEach(el => { el.innerHTML = `<svg viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="${OLAS[el.dataset.ola] || OLAS[1]}" fill="currentColor"/></svg>`; });
   const PICT = { dani: "assets/img/pictograma-dani-carbon.png", compa: "assets/img/pictograma-compa-carbon.png", mantra: "assets/img/pictograma-mantra-carbon.png" };
   $$("[data-pict]").forEach(el => { el.style.setProperty("--img", `url("${new URL(PICT[el.dataset.pict], document.baseURI).href}")`); el.setAttribute("aria-hidden", "true"); });
   // Fondo de la tienda: pasaporte y franela en líneas finas
@@ -71,6 +76,12 @@
       g += `<g class="pisada" style="--i:${k}" transform="translate(${px.toFixed(1)} ${py.toFixed(1)}) rotate(${(ang*180/Math.PI + 90).toFixed(1)}) scale(1.15)">${PATITA}</g>`;
     }
     el.innerHTML = `<svg viewBox="0 0 1200 210" fill="currentColor">${g}</svg>`;
+  });
+
+  /* ---------- Galerías móviles: se duplica la pista para un recorrido continuo ---------- */
+  $$("[data-carrusel] .carrusel__pista").forEach(p => {
+    const copia = Array.from(p.children).map(n => { const c = n.cloneNode(true); c.setAttribute("aria-hidden", "true"); const i = c.querySelector("img"); if (i) i.alt = ""; return c; });
+    copia.forEach(c => p.appendChild(c));
   });
 
   /* ---------- SVG en línea (logo El Reseteo) ---------- */
