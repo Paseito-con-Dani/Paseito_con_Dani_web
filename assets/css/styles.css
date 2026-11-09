@@ -408,3 +408,253 @@ p{margin:0 0 16px;max-width:68ch}
   .hero2__marca--izq .hero2__tag{font-size:12px;margin:6px 0 0}
 }
 @media (max-width:760px){.hero2__fondo{object-position:43% 50%}}
+
+/* =========================================================
+   v7 · Portada final, board de postales e instantáneas, Jeep, aliados
+   ========================================================= */
+/* Portada: imagen completa, responsive, sin recortes */
+.portada{position:relative;background:var(--arena);line-height:0}
+.portada__img{display:block;width:100%;max-width:1600px;height:auto;margin:0 auto}
+
+.cita--lead{font-size:clamp(22px,2.4vw,30px);margin:0 0 18px}
+
+/* El equipo a bordo */
+.equipo-bordo{margin-top:52px}
+.equipo-bordo__grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:14px}
+.tripulante{display:flex;gap:18px;align-items:flex-start;background:var(--nube);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+.tripulante>img{width:64px;height:64px;object-fit:contain;flex:none}
+.tripulante h4{margin:0 0 6px;font-family:var(--font-title);font-weight:500;font-size:20px;letter-spacing:.04em;text-transform:uppercase}
+.tripulante h4 .bitacora{display:block;text-transform:none;letter-spacing:.02em;font-size:13px;font-weight:400}
+.tripulante p{font-size:15.5px;margin:0}
+@media (max-width:760px){.equipo-bordo__grid{grid-template-columns:1fr}}
+
+/* Galerías tipo board: postales e instantáneas */
+.carrusel__pista{padding:18px 0}
+.mov{border-radius:0;box-shadow:0 2px 4px rgba(3,3,4,.08),0 12px 26px rgba(3,3,4,.14);background:#FFFFFF;overflow:visible}
+.mov img{border-radius:10px}
+.mov.postal{padding:10px;border-radius:16px;transform:rotate(-1.4deg)}
+.mov.insta{padding:10px 10px 38px;border-radius:5px;transform:rotate(1.6deg)}
+.mov.insta img{border-radius:3px}
+.mov:nth-child(4n+3).postal{transform:rotate(1deg)}
+.mov:nth-child(4n).insta{transform:rotate(-2deg)}
+.carrusel--sm{--alto:clamp(170px,18vw,230px)}
+@media (max-width:760px){.carrusel--sm{--alto:180px}}
+
+/* Fotos sin forma de arco */
+.foto-r{margin:0;border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
+.foto-r img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Pilares con subtítulo */
+.pilar .subtitulo small{display:block;font-weight:400;font-size:12px;letter-spacing:.14em;color:var(--ink-muted);margin-top:4px}
+
+/* YouTube: excepción con los colores de YouTube */
+.btn--youtube,.sec--noche .btn--youtube{background:#FF0000;color:#FFFFFF}
+.btn--youtube svg{width:20px;height:20px}
+.yt__logo img{height:44px;width:auto;margin:0 auto 18px;display:block}
+
+/* Viaje a la medida */
+.a-medida{margin-top:44px;background:var(--nube);border-radius:20px;padding:28px 30px;box-shadow:var(--shadow);border-left:6px solid var(--fogata);max-width:880px}
+.a-medida p{max-width:none}
+
+/* Jeep · aliado principal */
+.jeep-banner{display:grid;grid-template-columns:1fr 1.15fr;background:var(--carbon);color:var(--arena);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
+.jeep-banner__txt{padding:clamp(28px,4vw,52px);display:flex;flex-direction:column;justify-content:center}
+.jeep-banner .etiqueta{color:var(--araguaney)}
+.jeep-banner .titulo{color:var(--arena)}
+.jeep-banner__logo img{height:44px;width:auto;margin-bottom:16px}
+.jeep-banner__foto{margin:0;min-height:360px}
+.jeep-banner__foto img{width:100%;height:100%;object-fit:cover;object-position:50% 60%;display:block}
+@media (max-width:860px){.jeep-banner{grid-template-columns:1fr}.jeep-banner__foto{min-height:300px}}
+
+/* Aliados */
+.sec--aliados{padding-bottom:clamp(56px,7vw,90px)}
+.aliados{display:flex;flex-wrap:wrap;gap:28px;align-items:center;margin-top:22px}
+.aliado img{height:56px;width:auto;filter:grayscale(1);opacity:.85;transition:filter .3s,opacity .3s}
+.aliado:hover img{filter:none;opacity:1}
+.aliados__vacio{color:var(--ink-muted)}
+
+/* Footer más compacto, Makhana del mismo tamaño */
+.footer{padding:16px var(--pad) 16px}
+.footer__powered{gap:6px}
+.footer small{margin-top:8px;font-size:12px}
+@media (max-width:760px){#dani .deco{display:none}}
+.mov img{width:auto;height:100%}
+
+/* v8 · Equipo con fotos, banda Jeep orgánica, isotipo YouTube */
+.tripulante{flex-direction:column;gap:14px}
+.tripulante__foto{margin:0;width:100%;aspect-ratio:4/3;border-radius:16px;overflow:hidden}
+.tripulante__foto img{width:100%;height:100%;object-fit:cover;display:block}
+.etiqueta--yt{display:inline-flex;align-items:center;gap:10px}
+.yt__iso img{height:1.6em;width:auto;display:block}
+.jeep-banda{position:relative;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:clamp(24px,4vw,56px);padding:clamp(70px,8vw,110px) clamp(24px,5vw,72px);margin:10px calc(-1 * var(--pad)) 0;color:var(--arena)}
+.jeep-banda__fondo{position:absolute;inset:0;background:var(--carbon);-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201440%20600%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M0%2070C240%2010%20480%20120%20720%2060C960%200%201200%20100%201440%2040V555C1200%20610%20960%20520%20720%20572C480%20624%20240%20540%200%20592Z%22%20fill%3D%22%23000%22/%3E%3C/svg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201440%20600%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M0%2070C240%2010%20480%20120%20720%2060C960%200%201200%20100%201440%2040V555C1200%20610%20960%20520%20720%20572C480%20624%20240%20540%200%20592Z%22%20fill%3D%22%23000%22/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.jeep-banda__txt{position:relative;z-index:1}
+.jeep-banda .titulo{color:var(--arena);font-size:clamp(36px,4.6vw,60px)}
+.jeep-banda__foto{position:relative;z-index:1;margin:-40px 0;aspect-ratio:4/5;max-height:520px;justify-self:center;width:min(100%,420px);overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35);border-radius:46% 54% 42% 58% / 40% 44% 56% 60%;transform:rotate(-2deg)}
+.jeep-banda__foto img{width:100%;height:100%;object-fit:cover;object-position:50% 60%;display:block}
+@media (max-width:860px){.jeep-banda{grid-template-columns:1fr;text-align:left}.jeep-banda__foto{margin:0;width:min(100%,340px)}}
+@media (max-width:760px){#postales .deco,#experiencias .deco,#jeep .deco{display:none}}
+.jeep-banda{width:100vw;margin-left:calc(50% - 50vw);margin-right:0;padding-left:max(var(--pad),calc((100vw - var(--wrap)) / 2 + var(--pad)));padding-right:max(var(--pad),calc((100vw - var(--wrap)) / 2 + var(--pad)))}
+.jeep-banda__foto{border-radius:38% 62% 45% 55% / 45% 40% 60% 55%}
+
+/* v9 · Banner horizontal de Jeep: foto a todo el ancho con bordes ondulados */
+.jeep-banda--foto{grid-template-columns:1fr;min-height:clamp(380px,40vw,600px);align-items:center}
+.jeep-banda--foto .jeep-banda__fondo{background:var(--carbon);overflow:hidden}
+.jeep-banda--foto .jeep-banda__fondo img{width:100%;height:100%;object-fit:cover;object-position:68% 45%;display:block}
+.jeep-banda--foto .jeep-banda__fondo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,3,4,.82) 0%,rgba(3,3,4,.55) 34%,rgba(3,3,4,0) 62%)}
+.jeep-banda--foto .jeep-banda__txt{max-width:480px;text-shadow:0 2px 14px rgba(0,0,0,.4)}
+@media (max-width:760px){
+  .jeep-banda--foto{min-height:560px;align-items:end}
+  .jeep-banda--foto .jeep-banda__fondo img{object-position:72% 50%}
+  .jeep-banda--foto .jeep-banda__fondo::after{background:linear-gradient(0deg,rgba(3,3,4,.88) 0%,rgba(3,3,4,.5) 45%,rgba(3,3,4,0) 75%)}
+}
+.jeep-banda--foto .jeep-banda__txt{max-width:390px}
+.jeep-banda--foto .titulo{font-size:clamp(32px,3.6vw,52px)}
+.jeep-banda--foto .jeep-banda__fondo img{object-position:68% 30%}
+.jeep-banda--foto .jeep-banda__fondo::after{background:linear-gradient(90deg,rgba(3,3,4,.85) 0%,rgba(3,3,4,.6) 28%,rgba(3,3,4,0) 48%)}
+@media (max-width:760px){.jeep-banda--foto .jeep-banda__fondo img{object-position:72% 30%}.jeep-banda--foto .jeep-banda__fondo::after{background:linear-gradient(0deg,rgba(3,3,4,.88) 0%,rgba(3,3,4,.5) 45%,rgba(3,3,4,0) 75%)}}
+
+/* v10 · Isotipo YouTube, logo Jeep y banner con El Compa completo */
+.yt__iso img{height:28px}
+.etiqueta--yt{gap:12px}
+.jeep-banda--der{min-height:clamp(440px,50vw,760px)}
+.jeep-banda--der .jeep-banda__fondo img{object-position:50% 72%}
+.jeep-banda--der .jeep-banda__fondo::after{background:linear-gradient(270deg,rgba(3,3,4,.86) 0%,rgba(3,3,4,.6) 26%,rgba(3,3,4,0) 44%)}
+.jeep-banda--der .jeep-banda__txt{justify-self:end;max-width:380px}
+.jeep-banner__logo img{height:56px;width:auto;margin-bottom:18px;display:block}
+@media (max-width:760px){
+  .jeep-banda--der{min-height:600px;align-items:end}
+  .jeep-banda--der .jeep-banda__fondo img{object-position:47% 60%}
+  .jeep-banda--der .jeep-banda__fondo::after{background:linear-gradient(0deg,rgba(3,3,4,.9) 0%,rgba(3,3,4,.55) 38%,rgba(3,3,4,0) 62%)}
+  .jeep-banda--der .jeep-banda__txt{justify-self:start}
+}
+.jeep-banda--der .jeep-banda__txt{max-width:310px}
+.jeep-banda--der .titulo{font-size:clamp(28px,3vw,44px)}
+.jeep-banda--der .jeep-banner__logo img{height:44px}
+.jeep-banda--der .jeep-banda__fondo::after{background:linear-gradient(270deg,rgba(3,3,4,.88) 0%,rgba(3,3,4,.55) 22%,rgba(3,3,4,0) 34%)}
+@media (max-width:760px){
+  .jeep-banda--der{min-height:680px;align-items:end;padding-bottom:70px}
+  .jeep-banda--der .jeep-banda__fondo img{height:56%;object-position:40% 60%}
+  .jeep-banda--der .jeep-banda__fondo::after{background:linear-gradient(180deg,rgba(3,3,4,0) 40%,var(--carbon) 57%)}
+  .jeep-banda--der .jeep-banda__txt{max-width:none}
+}
+
+/* =========================================================
+   v11 · Ficha de experiencia, reporte de pago, club, Jeep playa, aliados
+   ========================================================= */
+.modal__panel--ancho{max-width:880px;background:var(--nube)}
+.modal__x{position:absolute;top:14px;right:18px}
+.titulo--modal{font-size:clamp(26px,3vw,38px);margin-top:6px}
+.ficha-galeria{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 26px}
+.ficha-galeria figure{margin:0;aspect-ratio:1;border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.ficha-galeria img{width:100%;height:100%;object-fit:cover;display:block}
+.incluye{list-style:none;padding:0;margin:10px 0 24px;columns:2;column-gap:28px}
+.incluye li{break-inside:avoid;margin:0 0 10px;font-size:15px;line-height:1.5}
+.tarifas__grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0}
+.tarifas__grid>div{background:var(--arena);border-radius:14px;padding:14px 16px}
+.tarifas__grid p{margin:4px 0;font-size:16px}
+.condiciones{font-size:14.5px;background:#FFF6D2;border-left:4px solid var(--araguaney);padding:10px 14px;border-radius:8px;margin:14px 0 20px}
+.paso{font-family:var(--font-title);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:15px;margin:24px 0 10px}
+.metodos{display:flex;gap:8px;flex-wrap:wrap}
+.datos-pago__caja{background:var(--arena);border-radius:14px;padding:12px 16px;margin-top:12px}
+.datos-pago__caja p{margin:2px 0;font-family:var(--font-mono);font-size:14.5px}
+.resumen-pago p{margin:12px 0 0}
+.campo--doble{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check{display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:14.5px}
+.check input{margin-top:4px;width:18px;height:18px;accent-color:var(--fogata)}
+@media (max-width:640px){.ficha-galeria{grid-template-columns:repeat(2,1fr)}.incluye{columns:1}.tarifas__grid{grid-template-columns:1fr}}
+
+/* Tienda */
+.producto--ancho{grid-column:span 2}
+.producto--ancho .producto__body p{font-size:14.5px}
+.pie__botones{display:flex;gap:8px}
+@media (max-width:640px){.producto--ancho{grid-column:auto}}
+
+/* Banner Jeep en la playa: El Compa completo, logo y texto sobre el cielo */
+.jeep-banda--playa{color:var(--carbon);align-items:start;min-height:clamp(460px,48vw,720px)}
+.jeep-banda--playa .jeep-banda__fondo img{object-position:50% 72%}
+.jeep-banda--playa .jeep-banda__fondo::after{background:linear-gradient(180deg,rgba(242,235,216,.88) 0%,rgba(242,235,216,.45) 30%,rgba(242,235,216,0) 46%)}
+.jeep-banda--playa .jeep-banda__txt{max-width:640px;text-shadow:none;justify-self:start;padding-top:10px}
+.jeep-banda--playa .titulo{color:var(--carbon);font-size:clamp(30px,3.6vw,52px)}
+.jeep-banda--playa .jeep-banner__logo img{height:clamp(44px,5vw,70px)}
+.jeep-banda__sub{font-size:clamp(16px,1.4vw,20px);margin:6px 0 0}
+@media (max-width:760px){
+  .jeep-banda--playa{min-height:600px;align-items:start;padding-bottom:70px}
+  .jeep-banda--playa .jeep-banda__fondo img{height:100%;object-position:55% 78%}
+  .jeep-banda--playa .jeep-banda__fondo::after{background:linear-gradient(180deg,rgba(242,235,216,.92) 0%,rgba(242,235,216,.6) 38%,rgba(242,235,216,0) 58%)}
+}
+
+/* Aliados: logos pequeños y proporcionados */
+.aliados{justify-content:center;gap:clamp(28px,5vw,64px);margin-top:30px}
+.aliado{display:flex;align-items:center;justify-content:center;height:80px}
+.aliado img{filter:none;opacity:1;max-width:180px;object-fit:contain;height:48px}
+.aliado img[alt^="Miravisión"]{height:28px}
+.aliado img[alt^="Global"]{height:74px}
+.aliado img[alt^="Heros"]{height:52px}
+.aliado img[alt^="Neoxpress"]{height:50px}
+.aliado img[alt^="Makhana"]{height:42px}
+.sec--aliados .wrap{text-align:center}
+.sec--aliados .titulo{margin-left:auto;margin-right:auto}
+
+/* Footer compacto en una sola franja, Makhana del mismo tamaño */
+.footer{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px 28px;padding:12px var(--pad)}
+.footer__powered{flex-direction:row;gap:12px}
+.footer small{margin:0}
+/* Jeep playa · v11b: texto en columna clara, foto a la derecha con El Compa completo */
+.jeep-banda--playa{align-items:center;min-height:clamp(440px,38vw,580px)}
+.jeep-banda--playa .jeep-banda__fondo{background:#EDE3D1}
+.jeep-banda--playa .jeep-banda__fondo img{position:absolute;right:0;top:0;width:64%;height:100%;object-fit:cover;object-position:50% 72%;-webkit-mask:linear-gradient(90deg,transparent 0,#000 22%);mask:linear-gradient(90deg,transparent 0,#000 22%)}
+.jeep-banda--playa .jeep-banda__fondo::after{display:none}
+.jeep-banda--playa .jeep-banda__txt{max-width:min(40%,460px);padding-top:0}
+@media (max-width:760px){
+  .jeep-banda--playa{min-height:640px;align-items:start;padding-top:80px}
+  .jeep-banda--playa .jeep-banda__fondo img{top:auto;bottom:0;width:100%;height:58%;object-position:52% 70%;-webkit-mask:linear-gradient(180deg,transparent 0,#000 20%);mask:linear-gradient(180deg,transparent 0,#000 20%)}
+  .jeep-banda--playa .jeep-banda__txt{max-width:none}
+}
+.producto--ancho{display:grid;grid-template-columns:minmax(150px,.65fr) 1.35fr}
+.producto--ancho .producto__img{aspect-ratio:auto;height:100%;min-height:200px}
+@media (max-width:640px){.producto--ancho{display:flex;flex-direction:column}.producto--ancho .producto__img{aspect-ratio:4/3;height:auto;min-height:0}}
+
+/* v12 · Logo animado de Jeep integrado al banner */
+.jeep-logo-anim{width:clamp(150px,17vw,250px);margin:0 0 6px -6px}
+.jeep-logo-anim video,.jeep-logo-anim img{display:block;width:100%;height:auto;mix-blend-mode:multiply;background:transparent}
+.jeep-banda--playa .titulo{font-size:clamp(28px,3.2vw,46px);margin-top:0}
+.jeep-banda__sub{font-size:clamp(16px,1.35vw,20px);line-height:1.45}
+.jeep-banda__sub strong{font-family:var(--font-title);font-weight:500;letter-spacing:.04em;text-transform:uppercase;font-size:1.05em}
+@media (max-width:1024px) and (min-width:761px){.jeep-banda--playa .jeep-banda__txt{max-width:44%}.jeep-banda--playa .jeep-banda__fondo img{width:60%}}
+@media (max-width:760px){.jeep-logo-anim{width:min(52vw,220px)}}
+/* El video ya trae el fondo del color del panel; los bordes se difuminan para que no se note ningún recuadro */
+.jeep-logo-anim video,.jeep-logo-anim img{mix-blend-mode:normal;-webkit-mask:radial-gradient(ellipse 72% 70% at 50% 50%,#000 62%,transparent 100%);mask:radial-gradient(ellipse 72% 70% at 50% 50%,#000 62%,transparent 100%)}
+
+/* v14 · Banner Jeep con foto vertical de Dani, Mantra y El Compa */
+.jeep-banda--playa{min-height:clamp(480px,44vw,660px)}
+.jeep-banda--playa .jeep-banda__fondo img{width:50%;object-position:50% 80%;-webkit-mask:linear-gradient(90deg,transparent 0,#000 16%);mask:linear-gradient(90deg,transparent 0,#000 16%)}
+.jeep-banda--playa .jeep-banda__txt{max-width:min(44%,480px)}
+@media (max-width:1024px) and (min-width:761px){.jeep-banda--playa .jeep-banda__fondo img{width:54%}.jeep-banda--playa .jeep-banda__txt{max-width:42%}}
+@media (max-width:760px){
+  .jeep-banda--playa{min-height:760px}
+  .jeep-banda--playa .jeep-banda__fondo img{width:100%;height:62%;object-position:50% 78%;-webkit-mask:linear-gradient(180deg,transparent 0,#000 14%);mask:linear-gradient(180deg,transparent 0,#000 14%)}
+}
+.jeep-banda--playa{min-height:clamp(500px,46vw,700px)}
+.jeep-banda--playa .jeep-banda__fondo img{width:44%;object-position:50% 82%}
+@media (max-width:1024px) and (min-width:761px){.jeep-banda--playa{min-height:540px}.jeep-banda--playa .jeep-banda__fondo img{width:46%;object-position:50% 84%}}
+@media (max-width:760px){
+  .jeep-banda--playa{min-height:860px}
+  .jeep-banda--playa .jeep-banda__fondo img{width:100%;height:58%;object-position:50% 80%}
+}
+.jeep-banda--playa .jeep-banda__fondo img{width:40%;object-position:50% 72%;-webkit-mask:linear-gradient(90deg,transparent 0,#000 12%);mask:linear-gradient(90deg,transparent 0,#000 12%)}
+@media (max-width:1024px) and (min-width:761px){.jeep-banda--playa .jeep-banda__fondo img{width:44%;object-position:50% 72%}}
+@media (max-width:760px){.jeep-banda--playa .jeep-banda__fondo img{width:100%;-webkit-mask:linear-gradient(180deg,transparent 0,#000 14%);mask:linear-gradient(180deg,transparent 0,#000 14%)}}
+/* v15 · Teléfono: texto del banner Jeep a lo ancho, para no tapar a Dani */
+@media (max-width:760px){
+  .jeep-banda--playa .jeep-banda__txt{max-width:none;width:100%}
+  .jeep-banda--playa .jeep-logo-anim{width:min(44vw,180px)}
+  .jeep-banda--playa .titulo{font-size:clamp(26px,7vw,32px);max-width:none}
+  .jeep-banda--playa{min-height:820px}
+}
+/* v16 · Teléfono: la foto se muestra completa (sin recorte) y con una transición corta y suave */
+@media (max-width:760px){
+  .jeep-banda--playa{min-height:calc(340px + 150vw)}
+  .jeep-banda--playa .jeep-banda__fondo img{top:auto;bottom:3%;width:100%;height:auto;aspect-ratio:933/1400;object-fit:cover;
+    -webkit-mask:linear-gradient(180deg,transparent 0,rgba(0,0,0,.6) 3%,#000 7%);mask:linear-gradient(180deg,transparent 0,rgba(0,0,0,.6) 3%,#000 7%)}
+}

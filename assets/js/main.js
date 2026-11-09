@@ -132,8 +132,13 @@
   fAliados?.addEventListener("submit", e => { e.preventDefault(); enviar(fAliados, "aliados"); });
 
   /* ---------- Calendario de experiencias ---------- */
-  const EXP = (C.experiencias || []).slice().sort((a, b) => (a.fecha || "9999").localeCompare(b.fecha || "9999"));
+  const EXP_ALL = (C.experiencias || []).slice().sort((a, b) => (a.fecha || "9999").localeCompare(b.fecha || "9999"));
   const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  // Un destino desaparece de la oferta cuando ya pasó su última fecha
+  const finDe = e => e.fechaFin || e.fecha;
+  const EXP = EXP_ALL.filter(e => !e.fecha || fecha(finDe(e)) >= hoy);
+  const rango = e => { if (!e.fecha) return ""; const a = fecha(e.fecha), b = fecha(finDe(e)); const m = x => MESES[x.getMonth()];
+    return a.getTime() === b.getTime() ? `${a.getDate()} de ${m(a)} de ${a.getFullYear()}` : (a.getMonth() === b.getMonth() ? `${a.getDate()} al ${b.getDate()} de ${m(a)} de ${a.getFullYear()}` : `${a.getDate()} de ${m(a)} al ${b.getDate()} de ${m(b)} de ${b.getFullYear()}`); };
   const proxima = EXP.find(e => e.fecha && fecha(e.fecha) >= hoy);
   let vista = proxima ? fecha(proxima.fecha) : new Date(hoy); vista.setDate(1);
   const nombreDestino = e => e.revelado ? e.destino : "Destino por revelar";
@@ -147,7 +152,7 @@
     for (let i = 0; i < 42; i++) {
       const d = new Date(inicio); d.setDate(inicio.getDate() + i);
       const iso = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-      const ev = EXP.find(e => e.fecha === iso && e.revelado);
+      const ev = EXP.find(e => e.revelado && e.fecha && iso >= e.fecha && iso <= finDe(e));
       const fuera = d.getMonth() !== vista.getMonth(); const esHoy = d.getTime() === hoy.getTime();
       if (ev && !fuera) celdas += `<button class="cal__dia cal__dia--evento ${ev.revelado ? "" : "cal__dia--intriga"}" data-ev="${ev.id}" aria-label="${esc(ev.titulo)}, ${d.getDate()} de ${MESES[d.getMonth()]}">${d.getDate()}</button>`;
       else celdas += `<div class="cal__dia ${fuera ? "cal__dia--fuera" : ""} ${esHoy ? "cal__dia--hoy" : ""}">${d.getDate()}</div>`;
@@ -157,13 +162,13 @@
   }
   function pintarAgenda() {
     const ag = $("[data-agenda]"); if (!ag) return;
-    ag.innerHTML = EXP.filter(e => !e.fecha || fecha(e.fecha) >= hoy).map(e => {
+    ag.innerHTML = EXP.map(e => {
       const f = e.fecha && e.revelado ? fecha(e.fecha) : null; const abierto = e.estado === "abierto" || e.estado === "lista";
       return `<article class="evento ${e.revelado ? "" : "evento--intriga"}">
-        <div class="evento__fecha">${f ? `${f.getDate()}<small>${MESES[f.getMonth()].slice(0,3)} ${f.getFullYear()}</small>` : `?<small>Pronto</small>`}</div>
+        <div class="evento__fecha">${f ? `${f.getDate()}${e.fechaFin && e.fechaFin !== e.fecha ? `–${fecha(e.fechaFin).getDate()}` : ""}<small>${MESES[f.getMonth()].slice(0,3)} ${f.getFullYear()}</small>` : `?<small>Pronto</small>`}</div>
         <h4>${esc(e.titulo)}</h4>
-        <span class="bitacora">${f ? esc(nombreDestino(e)) : "Fecha y destino por revelar"}</span>
-        ${abierto ? `<button class="btn btn--primario" data-reservar="${e.id}">${e.estado === "lista" ? "Quiero enterarme primero" : "Reservar mi lugar"}</button>` : `<span class="tag ${e.estado === "agotado" ? "tag--linea" : "tag--orquidea"}">${e.estado === "agotado" ? "Cupos agotados" : "Muy pronto"}</span>`}
+        <span class="bitacora">${f ? esc(rango(e)) + (e.detalle ? " · " + esc(e.detalle) : "") : "Fecha y destino por revelar"}</span>
+        ${e.info ? `<button class="btn btn--primario" data-info="${e.id}">Info</button>` : abierto ? `<button class="btn btn--primario" data-reservar="${e.id}">${e.estado === "lista" ? "Quiero enterarme primero" : "Reservar mi lugar"}</button>` : `<span class="tag ${e.estado === "agotado" ? "tag--linea" : "tag--orquidea"}">${e.estado === "agotado" ? "Cupos agotados" : "Muy pronto"}</span>`}
       </article>`;
     }).join("") || `<p>Muy pronto anunciaremos nuevas fechas.</p>`;
     $$("[data-reservar]", ag).forEach(b => b.addEventListener("click", () => abrirEvento(b.dataset.reservar)));
@@ -175,12 +180,12 @@
   const modal = $("[data-modal]"); const fReg = $("[data-form='registro']");
   function abrirEvento(id) {
     const e = EXP.find(x => x.id === id); if (!e) return; const f = e.fecha && e.revelado ? fecha(e.fecha) : null;
-    $("[data-modal-fecha]").textContent = f ? `${f.getDate()} de ${MESES[f.getMonth()]} ${f.getFullYear()} · ${nombreDestino(e)}` : "Fecha y destino por revelar";
+    $("[data-modal-fecha]").textContent = f ? `${rango(e)} · ${nombreDestino(e)}` : "Fecha y destino por revelar";
     $("[data-modal-titulo]").textContent = e.titulo; $("[data-modal-desc]").textContent = e.descripcion || "";
     fReg.experiencia.value = `${e.titulo} (${e.fecha})`; $("[data-estado]", fReg).innerHTML = "";
     const abierto = e.estado === "abierto" || e.estado === "lista"; fReg.hidden = !abierto;
     $("button[type=submit]", fReg).textContent = e.estado === "lista" ? "Avísenme primero" : "Reservar mi lugar";
-    $(".bitacora", fReg).textContent = e.estado === "lista" ? "Te avisaremos antes que a nadie cuando revelemos la fecha y el destino." : "Este registro es una pre-reserva. Te contactaremos para confirmar tu cupo y el pago.";
+    $(".bitacora", fReg).textContent = e.estado === "lista" ? (e.revelado ? "Te avisaremos antes que a nadie cuando publiquemos los detalles y abramos los cupos." : "Te avisaremos antes que a nadie cuando revelemos la fecha y el destino.") : "Este registro es una pre-reserva. Te contactaremos para confirmar tu cupo y el pago.";
     if (!abierto) $("[data-modal-desc]").textContent += " El registro abre muy pronto: síguenos en redes para enterarte primero.";
     modal.classList.add("open"); modal.setAttribute("aria-hidden", "false"); (abierto ? $("#r-nombre") : $("[data-cerrar-modal]", modal)).focus();
   }
@@ -189,7 +194,8 @@
   fReg?.addEventListener("submit", e => { e.preventDefault(); enviar(fReg, "registro"); });
 
   /* ---------- Tienda y carrito ---------- */
-  const PROD = C.productos || []; const P = C.pagos || {};
+  const PROD_EXP = EXP.filter(e => e.revelado && e.fecha).map(e => ({ id: "exp-" + e.id, tipo: "exp", expId: e.id, categoria: "Experiencias", nombre: "Experiencia 360° · " + e.titulo, descripcion: rango(e) + (e.resumen ? ". " + e.resumen : "."), desde: e.tarifas ? Math.min(e.tarifas.divisas.adulto, e.tarifas.divisas.nino) : null, imagen: e.imagen, venta: e.estado === "abierto" && !!e.tarifas }));
+  const PROD = [...PROD_EXP, ...(C.productos || [])]; const P = C.pagos || {};
   const cats = ["Todo", ...new Set(PROD.map(p => p.categoria))];
   let filtro = "Todo";
   const usd = n => `$${Number(n).toLocaleString("es-VE", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
@@ -197,14 +203,24 @@
     $("[data-filtros]").innerHTML = cats.map(c => `<button class="filtro" aria-pressed="${c === filtro}" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
     $$("[data-cat]").forEach(b => b.addEventListener("click", () => { filtro = b.dataset.cat; pintarFiltros(); pintarProductos(); }));
   }
+  function piePro(p) {
+    if (p.tipo === "exp") return p.venta
+      ? `<button class="btn btn--primario" data-info="${p.expId}">Ver detalles</button>`
+      : `<button class="btn btn--secundario" disabled>Muy pronto</button>`;
+    if (p.tipo === "club") return `<button class="btn btn--primario" data-club>Quiero información</button>`;
+    return p.precioUSD != null ? `<span class="precio">${usd(p.precioUSD)}</span><button class="btn btn--primario" data-agregar="${p.id}">Agregar</button>` : `<button class="btn btn--secundario" disabled>Muy pronto</button>`;
+  }
   function pintarProductos() {
     $("[data-productos]").innerHTML = PROD.filter(p => filtro === "Todo" || p.categoria === filtro).map(p => `
-      <article class="producto">
+      <article class="producto${p.tipo === "club" ? " producto--ancho" : ""}">
         <div class="producto__img">${p.imagen ? `<img src="${esc(p.imagen)}" alt="" loading="lazy">` : `<img class="pict" src="${esc(p.pictograma || "assets/img/pictograma-pin-arena.png")}" alt="">`}${p.etiqueta ? `<span class="tag">${esc(p.etiqueta)}</span>` : ""}</div>
-        <div class="producto__body"><span class="etiqueta" style="margin:0">${esc(p.categoria)}</span><h4>${esc(p.nombre)}</h4><p>${esc(p.descripcion)}</p>
-          <div class="producto__pie">${p.precioUSD != null ? `<span class="precio">${usd(p.precioUSD)}</span><button class="btn btn--primario" data-agregar="${p.id}">Agregar</button>` : `<span class="bitacora">Precio por anunciar</span><button class="btn btn--secundario" disabled>Muy pronto</button>`}</div>
+        <div class="producto__body"><span class="etiqueta" style="margin:0">${esc(p.categoria)}</span><h4>${esc(p.nombre)}</h4>${p.parrafos ? p.parrafos.map(t => `<p>${esc(t)}</p>`).join("") : `<p>${esc(p.descripcion || "")}</p>`}
+          <div class="producto__pie">${piePro(p)}</div>
         </div></article>`).join("");
     $$("[data-agregar]").forEach(b => b.addEventListener("click", () => agregar(b.dataset.agregar)));
+    $$("[data-productos] [data-info]").forEach(b => b.addEventListener("click", () => abrirInfo(b.dataset.info)));
+    $$("[data-comprar]").forEach(b => b.addEventListener("click", () => abrirPago(b.dataset.comprar)));
+    $$("[data-club]").forEach(b => b.addEventListener("click", abrirClub));
   }
   $$("[data-filtrar]").forEach(a => a.addEventListener("click", () => { filtro = a.dataset.filtrar; pintarFiltros(); pintarProductos(); }));
   pintarFiltros(); pintarProductos();
@@ -267,12 +283,102 @@
     yt: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10 9 5 3-5 3z" fill="currentColor"/></svg>`
   };
   const canales = [];
-  if (K.whatsapp) { const n = K.whatsapp.replace(/\D/g, ""); canales.push(`<li><a href="https://wa.me/${n}" target="_blank" rel="noopener">${ico.wa}${esc(K.whatsapp)}</a></li>`); }
+  [].concat(K.whatsapp || []).forEach(w => { const n = w.replace(/\D/g, ""); canales.push(`<li><a href="https://wa.me/${n}" target="_blank" rel="noopener">${ico.wa}${esc(w)}</a></li>`); });
   if (K.correo) canales.push(`<li><a href="mailto:${esc(K.correo)}">${ico.mail}${esc(K.correo)}</a></li>`);
   (K.instagram || []).forEach(u => canales.push(`<li><a href="https://instagram.com/${esc(u)}" target="_blank" rel="noopener">${ico.ig}@${esc(u)}</a></li>`));
-  if (K.tiktok) canales.push(`<li><a href="https://www.tiktok.com/@${esc(K.tiktok)}" target="_blank" rel="noopener">${ico.tt}@${esc(K.tiktok)}</a></li>`);
-  if (K.youtube) canales.push(`<li><a href="https://www.youtube.com/@${esc(K.youtube)}" target="_blank" rel="noopener">${ico.yt}@${esc(K.youtube)}</a></li>`);
+  if (K.youtube) canales.push(`<li><a href="https://www.youtube.com/@${esc(K.youtube)}" target="_blank" rel="noopener">${ico.yt}YouTube @${esc(K.youtube)}</a></li>`);
+  if (K.tiktok) canales.push(`<li><a href="https://www.tiktok.com/@${esc(K.tiktok)}" target="_blank" rel="noopener">${ico.tt}TikTok @${esc(K.tiktok)}</a></li>`);
   const ul = $("[data-canales]"); if (ul) ul.innerHTML = canales.join("");
   const mk = $("[data-makhana]"); const mkUrl = (C.creditos || {}).makhanaUrl;
   if (mk) { if (mkUrl) mk.href = mkUrl; else { mk.removeAttribute("target"); mk.removeAttribute("rel"); } }
+
+  /* ---------- Espacios para materiales oficiales de marcas ---------- */
+  const slot = (sel, src, alt) => { const el = $(sel); if (el && src) { el.innerHTML = `<img src="${esc(src)}" alt="${esc(alt)}">`; el.hidden = false; } };
+  slot("[data-yt-iso]", yt.isotipo, "YouTube");
+  const J = C.jeep || {};
+  slot("[data-jeep-logo]", J.logo, "Jeep");
+  if (J.bannerOficial) { const b = $("[data-jeep-banner-img]"); if (b) b.src = J.bannerOficial; }
+  const al = $("[data-aliados]");
+  if (al) al.innerHTML = (C.aliados || []).length
+    ? C.aliados.map(a => `<a class="aliado" ${a.url ? `href="${esc(a.url)}" target="_blank" rel="noopener"` : ""}><img src="${esc(a.logo)}" alt="${esc(a.nombre)}" loading="lazy"></a>`).join("")
+    : `<p class="aliados__vacio">Muy pronto presentaremos a las marcas que recorren Venezuela con nosotros.</p>`;
+  const wa = [].concat(K.whatsapp || [])[0];
+  if (wa) $$("[data-whatsapp-medida]").forEach(a => { a.href = `https://wa.me/${wa.replace(/\D/g, "")}?text=${encodeURIComponent("Hola, quiero organizar una expedición privada con Paseíto con Dani.")}`; a.target = "_blank"; a.rel = "noopener"; });
+
+  /* ---------- Modales: ficha de experiencia, pago y club ---------- */
+  const abrirM = m => { m.classList.add("open"); m.setAttribute("aria-hidden", "false"); const f = m.querySelector("input:not([type=hidden]),button"); f && f.focus(); };
+  const cerrarM = m => { m.classList.remove("open"); m.setAttribute("aria-hidden", "true"); };
+  const mInfo = $("[data-info-modal]"), mPago = $("[data-pago-modal]"), mClub = $("[data-club-modal]");
+  $$("[data-cerrar-info]").forEach(b => b.addEventListener("click", () => cerrarM(mInfo)));
+  $$("[data-cerrar-pago]").forEach(b => b.addEventListener("click", () => cerrarM(mPago)));
+  $$("[data-cerrar-club]").forEach(b => b.addEventListener("click", () => cerrarM(mClub)));
+  document.addEventListener("keydown", ev => { if (ev.key === "Escape") [mInfo, mPago, mClub].forEach(m => m && cerrarM(m)); });
+  const tarifasHTML = e => e.tarifas ? `<div class="tarifas__grid">
+      <div><span class="etiqueta">Pagos en divisas</span><p>Adultos <strong>${usd(e.tarifas.divisas.adulto)}</strong></p><p>Niños <strong>${usd(e.tarifas.divisas.nino)}</strong></p></div>
+      <div><span class="etiqueta">Pagos en bolívares a tasa BCV</span><p>Adultos <strong>${usd(e.tarifas.bolivares.adulto)}</strong></p><p>Niños <strong>${usd(e.tarifas.bolivares.nino)}</strong></p></div>
+    </div><p class="bitacora">Todo incluido · 3 días y 2 noches</p>` : "";
+  function abrirInfo(id) {
+    const e = EXP.find(x => x.id === id); if (!e || !e.info) return; const I = e.info;
+    $("[data-info-body]").innerHTML = `
+      <span class="etiqueta">${esc(rango(e))}</span>
+      <h3 class="titulo titulo--modal" id="info-titulo">${esc(I.titulo)}</h3>
+      <p class="cita cita--lead">${esc(I.lugar)}</p>
+      ${(I.parrafos || []).map(t => `<p>${esc(t)}</p>`).join("")}
+      ${I.galeria ? `<div class="ficha-galeria">${I.galeria.map(g => `<figure><img src="${esc(g)}" alt="" loading="lazy"></figure>`).join("")}</div>` : ""}
+      <h4 class="subtitulo">¿Qué incluye la experiencia?</h4>
+      <ul class="incluye">${(I.incluye || []).map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+      <h4 class="subtitulo">Tarifas</h4>
+      <div class="tarifas">${tarifasHTML(e)}</div>
+      <p class="condiciones">${esc(I.condiciones || "")}</p>
+      ${e.estado === "abierto" ? `<button class="btn btn--primario" data-comprar-ficha="${e.id}">Comprar</button>` : ""}`;
+    $$("[data-comprar-ficha]").forEach(b => b.addEventListener("click", () => { cerrarM(mInfo); abrirPago(b.dataset.comprarFicha); }));
+    abrirM(mInfo); mInfo.querySelector(".modal__panel").scrollTop = 0;
+  }
+  $$("[data-agenda] [data-info]").forEach(b => b.addEventListener("click", () => abrirInfo(b.dataset.info)));
+
+  const fPago = $("[data-form='pago']"); let expPago = null, metodo = null;
+  const MET = (C.pagos || {}).metodos || {};
+  function calcular() {
+    if (!expPago || !expPago.tarifas) return;
+    const m = MET[metodo] || {}; const t = expPago.tarifas[m.moneda === "divisas" ? "divisas" : "bolivares"];
+    const a = Math.max(0, +fPago.adultos.value || 0), n = Math.max(0, +fPago.ninos.value || 0); const total = a * t.adulto + n * t.nino; const pct = expPago.reservaPct || 30;
+    $("[data-pago-resumen]").innerHTML = total ? `<p>Total ${m.moneda === "divisas" ? "en divisas" : "en bolívares (a tasa BCV del día)"}: <strong>${usd(total)}</strong> · Reserva del ${pct}%: <strong>${usd(Math.round(total * pct) / 100)}</strong></p>` : "";
+    fPago.moneda.value = m.moneda === "divisas" ? "USD" : "Bs";
+  }
+  function pintarMetodos() {
+    $("[data-pago-metodos]").innerHTML = Object.entries(MET).map(([k, m]) => `<button type="button" class="filtro" role="radio" aria-checked="${k === metodo}" aria-pressed="${k === metodo}" data-metodo="${k}">${esc(m.nombre)}</button>`).join("");
+    $$("[data-metodo]").forEach(b => b.addEventListener("click", () => { metodo = b.dataset.metodo; pintarMetodos(); }));
+    const m = MET[metodo]; $("[data-pago-datos]").innerHTML = m ? `<div class="datos-pago__caja"><span class="etiqueta">Datos para ${esc(m.nombre)}</span>${(m.datos || []).map(d => `<p>${esc(d)}</p>`).join("")}</div>` : "";
+    calcular();
+  }
+  function abrirPago(id) {
+    const e = EXP.find(x => x.id === id); if (!e) return; expPago = e; metodo = Object.keys(MET)[0] || null;
+    $("[data-pago-fecha]").textContent = `${rango(e)} · ${e.destino || ""}`;
+    $("[data-pago-titulo]").textContent = "Experiencia 360° · " + e.titulo;
+    $("[data-pago-tarifas]").innerHTML = tarifasHTML(e) + (e.info && e.info.condiciones ? `<p class="condiciones">${esc(e.info.condiciones)}</p>` : "");
+    fPago.experiencia.value = `${e.titulo} (${rango(e)})`; fPago.experienciaId.value = e.id; $("[data-estado]", fPago).innerHTML = "";
+    pintarMetodos(); abrirM(mPago); mPago.querySelector(".modal__panel").scrollTop = 0;
+  }
+  fPago?.addEventListener("input", calcular);
+  fPago?.addEventListener("submit", ev => {
+    ev.preventDefault(); const e = expPago || {}; const I = e.info || {};
+    const detalle = [I.titulo, I.lugar, rango(e), "", "¿Qué incluye?", ...(I.incluye || []), "", I.condiciones || ""].join("\n");
+    enviar(fPago, "pago", { metodo: (MET[metodo] || {}).nombre || "", hoja: `${e.titulo} · ${rango(e)}`, detalle });
+  });
+  const fClub = $("[data-form='club']");
+  function abrirClub() { $("[data-estado]", fClub).innerHTML = ""; abrirM(mClub); }
+  fClub?.addEventListener("submit", ev => { ev.preventDefault(); enviar(fClub, "club"); });
+
+  /* ---------- Logo animado de Jeep: se reproduce cada vez que el banner entra en pantalla ---------- */
+  const jv = $("[data-jeep-anim]");
+  if (jv) {
+    const quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (quieto || !("IntersectionObserver" in window)) {
+      jv.outerHTML = `<img src="assets/img/jeep-logo-animado-poster.webp" alt="Jeep" class="jeep-logo-fijo">`;
+    } else {
+      new IntersectionObserver(es => es.forEach(en => {
+        if (en.isIntersecting) { jv.currentTime = 0; jv.play().catch(() => {}); }
+      }), { threshold: 0.5 }).observe(jv);
+    }
+  }
 })();

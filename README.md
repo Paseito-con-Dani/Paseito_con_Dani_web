@@ -39,8 +39,17 @@ Settings → Pages → *Deploy from a branch* → `main` / `(root)`. Para el dom
 
 ## Pendientes antes de publicar
 
-- [ ] Confirmar hora del estreno (hoy: 13 nov 2026, 7:00 p. m.).
+- [ ] Confirmar hora del estreno (fecha: 15 nov 2026; hora provisional: 7:00 p. m.).
 - [ ] Precios oficiales del catálogo y datos de pago.
 - [ ] Endpoints de Apps Script.
 - [ ] Reemplazar fotos momentáneas por las definitivas en alta.
 - [ ] Logo vectorial original de El Reseteo (el actual es una reconstrucción a partir de una captura).
+
+## Ventas de Experiencias 360° y Club de Aventureros (v11)
+
+- **Datos de pago:** completa `pagos.metodos` en `assets/js/config.js` (Pago móvil, Transferencia y Zelle). Mientras digan `____`, no publiques la venta.
+- **Tarifas y ficha de cada experiencia:** se editan en `experiencias` (campos `tarifas`, `info`, `galeria`). Cuando pasa la `fechaFin`, la experiencia desaparece sola del calendario y de la tienda.
+- **Google Sheets:** pega la misma URL de la aplicación web en `endpoints.registro`, `aliados`, `pago` y `club`.
+  - Cada experiencia crea su propia pestaña "Exp · …" con los pagos reportados.
+  - Cambia la columna **Estatus del pago** a **Pago completo** y el cliente recibe solo el correo "Tu lugar está asegurado".
+  - Ejecuta una vez la función `instalarActivadores` en Apps Script para activar ese correo.
