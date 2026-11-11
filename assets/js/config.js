@@ -19,6 +19,11 @@ window.PCD_CONFIG = {
 
   /* --- Endpoints de Google Apps Script (cuenta técnica web@) ---
      Pega aquí la URL de la aplicación web publicada. Vacío = el formulario funciona en modo demostración. */
+  /* --- Conexión con Google Sheets ---
+     Pega aquí la URL de la aplicación web de Apps Script (termina en /exec).
+     Una sola URL atiende todos los formularios: pagos, Club, aliados y lista de espera. */
+  endpoint: "",
+  // Opcional: una URL distinta para un formulario concreto (si se deja vacío, usa "endpoint")
   endpoints: {
     registro: "",   // Fase 1 · registro / pre-reserva de experiencias
     aliados: "",    // Fase 1 · formulario de marcas aliadas

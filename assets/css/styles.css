@@ -658,3 +658,10 @@ p{margin:0 0 16px;max-width:68ch}
   .jeep-banda--playa .jeep-banda__fondo img{top:auto;bottom:3%;width:100%;height:auto;aspect-ratio:933/1400;object-fit:cover;
     -webkit-mask:linear-gradient(180deg,transparent 0,rgba(0,0,0,.6) 3%,#000 7%);mask:linear-gradient(180deg,transparent 0,rgba(0,0,0,.6) 3%,#000 7%)}
 }
+
+/* v17 · Formularios del sistema de pagos */
+fieldset{border:0;padding:0;margin:0;min-width:0}
+[hidden]{display:none!important}
+fieldset.campos-2{margin-bottom:6px}
+
+.privacidad{font-size:14px;color:var(--ink-muted);margin:-6px 0 16px}

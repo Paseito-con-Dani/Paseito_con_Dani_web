@@ -111,14 +111,14 @@
   async function enviar(form, tipo, extra = {}) {
     const estado = $("[data-estado]", form); const btn = $("button[type=submit]", form);
     if (!form.checkValidity()) { form.reportValidity(); return false; }
-    const datos = Object.fromEntries(new FormData(form)); Object.assign(datos, extra, { tipo, enviado: new Date().toISOString() });
-    const url = (C.endpoints || {})[tipo];
+    const datos = Object.fromEntries(new FormData(form)); Object.assign(datos, extra, { tipo, enviado: new Date().toISOString() }); delete datos.mensajeOk;
+    const url = (C.endpoints || {})[tipo] || C.endpoint || "";
     btn.disabled = true;
     try {
       if (url) {
         // Apps Script: se envía como texto plano para evitar el bloqueo CORS de la petición previa.
         await fetch(url, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(datos) });
-        estado.innerHTML = `<div class="aviso">¡Listo! Recibimos tus datos y te escribiremos muy pronto. 🌿</div>`;
+        estado.innerHTML = `<div class="aviso">${extra.mensajeOk ? esc(extra.mensajeOk) : "¡Listo! Recibimos tus datos y te escribiremos muy pronto. 🌿"}</div>`;
       } else {
         console.info("[Modo demostración] Datos que se enviarían:", datos);
         estado.innerHTML = `<div class="aviso">Modo demostración: el formulario funciona, pero aún no está conectado a Google Sheets.</div>`;
@@ -129,7 +129,7 @@
     } finally { btn.disabled = false; }
   }
   const fAliados = $("[data-form='aliados']");
-  fAliados?.addEventListener("submit", e => { e.preventDefault(); enviar(fAliados, "aliados"); });
+  fAliados?.addEventListener("submit", e => { e.preventDefault(); enviar(fAliados, "aliados", { mensajeOk: "¡Gracias! Revisaremos tu solicitud y te escribiremos con nuestras condiciones de alianza." }); });
 
   /* ---------- Calendario de experiencias ---------- */
   const EXP_ALL = (C.experiencias || []).slice().sort((a, b) => (a.fecha || "9999").localeCompare(b.fecha || "9999"));
@@ -208,7 +208,7 @@
       ? `<button class="btn btn--primario" data-info="${p.expId}">Ver detalles</button>`
       : `<button class="btn btn--secundario" disabled>Muy pronto</button>`;
     if (p.tipo === "club") return `<button class="btn btn--primario" data-club>Quiero información</button>`;
-    return p.precioUSD != null ? `<span class="precio">${usd(p.precioUSD)}</span><button class="btn btn--primario" data-agregar="${p.id}">Agregar</button>` : `<button class="btn btn--secundario" disabled>Muy pronto</button>`;
+    return p.precioUSD != null ? `<span class="precio">${usd(p.precioUSD)}</span><button class="btn btn--primario" data-comprar-prod="${p.id}">Comprar</button>` : `<button class="btn btn--secundario" disabled>Muy pronto</button>`;
   }
   function pintarProductos() {
     $("[data-productos]").innerHTML = PROD.filter(p => filtro === "Todo" || p.categoria === filtro).map(p => `
@@ -220,6 +220,7 @@
     $$("[data-agregar]").forEach(b => b.addEventListener("click", () => agregar(b.dataset.agregar)));
     $$("[data-productos] [data-info]").forEach(b => b.addEventListener("click", () => abrirInfo(b.dataset.info)));
     $$("[data-comprar]").forEach(b => b.addEventListener("click", () => abrirPago(b.dataset.comprar)));
+    $$("[data-comprar-prod]").forEach(b => b.addEventListener("click", () => abrirCompra(b.dataset.comprarProd)));
     $$("[data-club]").forEach(b => b.addEventListener("click", abrirClub));
   }
   $$("[data-filtrar]").forEach(a => a.addEventListener("click", () => { filtro = a.dataset.filtrar; pintarFiltros(); pintarProductos(); }));
@@ -336,38 +337,62 @@
   }
   $$("[data-agenda] [data-info]").forEach(b => b.addEventListener("click", () => abrirInfo(b.dataset.info)));
 
-  const fPago = $("[data-form='pago']"); let expPago = null, metodo = null;
+  const fPago = $("[data-form='pago']"); let expPago = null, prodPago = null, metodo = null;
   const MET = (C.pagos || {}).metodos || {};
+  const modo = () => prodPago ? "tienda" : "experiencia";
   function calcular() {
-    if (!expPago || !expPago.tarifas) return;
-    const m = MET[metodo] || {}; const t = expPago.tarifas[m.moneda === "divisas" ? "divisas" : "bolivares"];
-    const a = Math.max(0, +fPago.adultos.value || 0), n = Math.max(0, +fPago.ninos.value || 0); const total = a * t.adulto + n * t.nino; const pct = expPago.reservaPct || 30;
-    $("[data-pago-resumen]").innerHTML = total ? `<p>Total ${m.moneda === "divisas" ? "en divisas" : "en bolívares (a tasa BCV del día)"}: <strong>${usd(total)}</strong> · Reserva del ${pct}%: <strong>${usd(Math.round(total * pct) / 100)}</strong></p>` : "";
+    const m = MET[metodo] || {}; let total = 0, nota = "";
+    if (prodPago) { total = Math.max(1, +fPago.cantidad.value || 1) * (prodPago.precioUSD || 0); nota = "Total de tu compra"; }
+    else if (expPago && expPago.tarifas) {
+      const t = expPago.tarifas[m.moneda === "divisas" ? "divisas" : "bolivares"];
+      total = Math.max(0, +fPago.adultos.value || 0) * t.adulto + Math.max(0, +fPago.ninos.value || 0) * t.nino;
+      nota = `Total ${m.moneda === "divisas" ? "en divisas" : "en bolívares (a tasa BCV del día)"}`;
+    }
+    const pct = (expPago && expPago.reservaPct) || 30;
+    $("[data-pago-resumen]").innerHTML = total ? `<p>${nota}: <strong>${usd(total)}</strong>${expPago ? ` · Reserva del ${pct}%: <strong>${usd(Math.round(total * pct) / 100)}</strong>` : ""}</p>` : "";
     fPago.moneda.value = m.moneda === "divisas" ? "USD" : "Bs";
+    fPago.dataset.total = total;
   }
   function pintarMetodos() {
     $("[data-pago-metodos]").innerHTML = Object.entries(MET).map(([k, m]) => `<button type="button" class="filtro" role="radio" aria-checked="${k === metodo}" aria-pressed="${k === metodo}" data-metodo="${k}">${esc(m.nombre)}</button>`).join("");
     $$("[data-metodo]").forEach(b => b.addEventListener("click", () => { metodo = b.dataset.metodo; pintarMetodos(); }));
-    const m = MET[metodo]; $("[data-pago-datos]").innerHTML = m ? `<div class="datos-pago__caja"><span class="etiqueta">Datos para ${esc(m.nombre)}</span>${(m.datos || []).map(d => `<p>${esc(d)}</p>`).join("")}</div>` : "";
+    $$("[data-metodo-campos]", fPago).forEach(fs => { const on = fs.dataset.metodoCampos === metodo; fs.hidden = !on; fs.disabled = !on; });
+    const m = MET[metodo]; $("[data-pago-datos]").innerHTML = m ? `<div class="datos-pago__caja"><span class="etiqueta">Datos para pagar por ${esc(m.nombre)}</span>${(m.datos || []).map(d => `<p>${esc(d)}</p>`).join("")}</div>` : "";
     calcular();
   }
+  function prepararModo() {
+    $$("[data-modo]", fPago).forEach(fs => { const on = fs.dataset.modo === modo(); fs.hidden = !on; fs.disabled = !on; });
+    const fr = $("[data-fraccion]", fPago); fr.hidden = !!prodPago; fPago.tipoPago.disabled = !!prodPago;
+    $("[data-condiciones-txt]", fPago).textContent = prodPago ? "Acepto las condiciones de compra y envío." : "Acepto las condiciones de reserva y cancelación.";
+  }
   function abrirPago(id) {
-    const e = EXP.find(x => x.id === id); if (!e) return; expPago = e; metodo = Object.keys(MET)[0] || null;
+    const e = EXP.find(x => x.id === id); if (!e) return; expPago = e; prodPago = null; metodo = Object.keys(MET)[0] || null;
     $("[data-pago-fecha]").textContent = `${rango(e)} · ${e.destino || ""}`;
     $("[data-pago-titulo]").textContent = "Experiencia 360° · " + e.titulo;
     $("[data-pago-tarifas]").innerHTML = tarifasHTML(e) + (e.info && e.info.condiciones ? `<p class="condiciones">${esc(e.info.condiciones)}</p>` : "");
     fPago.experiencia.value = `${e.titulo} (${rango(e)})`; fPago.experienciaId.value = e.id; $("[data-estado]", fPago).innerHTML = "";
-    pintarMetodos(); abrirM(mPago); mPago.querySelector(".modal__panel").scrollTop = 0;
+    prepararModo(); pintarMetodos(); abrirM(mPago); mPago.querySelector(".modal__panel").scrollTop = 0;
+  }
+  function abrirCompra(id) {
+    const pr = (C.productos || []).find(x => x.id === id); if (!pr) return; prodPago = pr; expPago = null; metodo = Object.keys(MET)[0] || null;
+    $("[data-pago-fecha]").textContent = pr.categoria || "Tienda";
+    $("[data-pago-titulo]").textContent = pr.nombre;
+    $("[data-pago-tarifas]").innerHTML = `<div class="tarifas__grid"><div><span class="etiqueta">Precio</span><p><strong>${usd(pr.precioUSD)}</strong></p></div></div>`;
+    fPago.experiencia.value = pr.nombre; fPago.experienciaId.value = pr.id; $("[data-estado]", fPago).innerHTML = "";
+    prepararModo(); pintarMetodos(); abrirM(mPago); mPago.querySelector(".modal__panel").scrollTop = 0;
   }
   fPago?.addEventListener("input", calcular);
   fPago?.addEventListener("submit", ev => {
-    ev.preventDefault(); const e = expPago || {}; const I = e.info || {};
-    const detalle = [I.titulo, I.lugar, rango(e), "", "¿Qué incluye?", ...(I.incluye || []), "", I.condiciones || ""].join("\n");
-    enviar(fPago, "pago", { metodo: (MET[metodo] || {}).nombre || "", hoja: `${e.titulo} · ${rango(e)}`, detalle });
+    ev.preventDefault();
+    const extra = { metodo: (MET[metodo] || {}).nombre || "", totalUSD: fPago.dataset.total || "", mensajeOk: "¡Listo! Recibimos el reporte de tu pago. Te escribiremos por correo en cuanto lo verifiquemos. 🌿" };
+    if (prodPago) Object.assign(extra, { categoria: "tienda", destino: prodPago.nombre, tipoPago: "Pago total", detalle: `${prodPago.nombre} · ${usd(prodPago.precioUSD)} c/u` });
+    else { const e = expPago || {}; const I = e.info || {};
+      Object.assign(extra, { categoria: "experiencia", destino: e.titulo, detalle: [I.titulo, I.lugar, rango(e), "", "¿Qué incluye?", ...(I.incluye || []), "", I.condiciones || ""].join("\n") }); }
+    enviar(fPago, "pago", extra).then(ok => { if (ok) { prepararModo(); pintarMetodos(); } });
   });
   const fClub = $("[data-form='club']");
   function abrirClub() { $("[data-estado]", fClub).innerHTML = ""; abrirM(mClub); }
-  fClub?.addEventListener("submit", ev => { ev.preventDefault(); enviar(fClub, "club"); });
+  fClub?.addEventListener("submit", ev => { ev.preventDefault(); enviar(fClub, "club", { mensajeOk: "¡Bienvenido a bordo! Serás de los primeros en saber cuando activemos el Club de Aventureros." }); });
 
   /* ---------- Logo animado de Jeep: se reproduce cada vez que el banner entra en pantalla ---------- */
   const jv = $("[data-jeep-anim]");
