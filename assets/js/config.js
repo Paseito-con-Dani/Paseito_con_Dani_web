@@ -22,7 +22,7 @@ window.PCD_CONFIG = {
   /* --- Conexión con Google Sheets ---
      Pega aquí la URL de la aplicación web de Apps Script (termina en /exec).
      Una sola URL atiende todos los formularios: pagos, Club, aliados y lista de espera. */
-  endpoint: "",
+  endpoint: "https://script.google.com/macros/s/AKfycbzbh0l7UJrLaFlQdZa8sTq-bHm3a-rYPO-PcX2N63c7rnkAaCRcoCk3R7Wt0oI3O2-o/exec",
   // Opcional: una URL distinta para un formulario concreto (si se deja vacío, usa "endpoint")
   endpoints: {
     registro: "",   // Fase 1 · registro / pre-reserva de experiencias
